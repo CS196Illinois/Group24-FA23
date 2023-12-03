@@ -1,4 +1,4 @@
-# Group TEAM_NUMBER
+# Group 24
 Group Name: TEAM_NAME
 
 [MVP Link](http://cs196.cs.illinois.edu)
@@ -6,5 +6,9 @@ Group Name: TEAM_NAME
 Team Members: STUDENTS_NETIDS
 mehull3
 kaiyang6
+aarav3
+kavya5
+yashvs2
+
 
 Project Manager: rohann5
