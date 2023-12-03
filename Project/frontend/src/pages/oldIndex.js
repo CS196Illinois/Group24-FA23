@@ -1,5 +1,5 @@
 import Dropdown from "@/components/Dropdown";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { nbaTeams } from "@/data/nba-teams";
 import React from "react";
 import Button from "@/components/Button";
@@ -8,6 +8,8 @@ export default function Home() {
   const [selectedTeam1, setSelectedTeam1] = useState([]);
   const [selectedTeam2, setSelectedTeam2] = useState([]);
   const [availableOptions, setAvailableOptions] = useState(nbaTeams);
+  const [teams, setTeams] = useState([]);
+  const [showBtn, setShowBtn] = useState(false);
 
   const handleSelectTeam1 = (team) => {
     if (selectedTeam1.length < 1) {
@@ -21,6 +23,7 @@ export default function Home() {
       setSelectedTeam2([...selectedTeam2, team]);
       setAvailableOptions(availableOptions.filter((t) => t !== team));
     }
+    setShowBtn(true);
   };
 
   const handleSubmit = async () => {
@@ -38,8 +41,24 @@ export default function Home() {
     });
 
     const responseData = await response.json();
+    fetchData();
     console.log(responseData);
+
+    // reset everything
+    setSelectedTeam1([]);
+    setSelectedTeam2([]);
+    setShowBtn(false);
   };
+
+  const fetchData = async () => {
+    const response = await fetch("http://localhost:5000/get_teams");
+    const data = await response.json();
+    setTeams(data);
+  };
+
+  // useEffect(() => {
+  //   fetchData();
+  // }, []);
 
   return (
     <>
@@ -63,13 +82,17 @@ export default function Home() {
             {
               // show all selected teams from both dropdowns
               [...selectedTeam1, ...selectedTeam2].map((team, index) => (
-                <div key={index}>
-                  {team}
+                <div key={index} className="flex justify-center">
+                  <h3 className="text-lg text-white font-bold">{team}</h3>
                   {index < selectedTeam1.length - 1 && <br />}
                 </div>
               ))
             }
-            <Button onClick={handleSubmit} btnText="Submit" />
+            {showBtn && (
+              <div className="flex justify-center my-4">
+                <Button onClick={handleSubmit} btnText="Submit" />
+              </div>
+            )}
           </div>
           <Dropdown
             title="Team 2"
@@ -80,6 +103,31 @@ export default function Home() {
             disabled={selectedTeam2.length >= 1}
           />{" "}
         </div>
+      </div>
+      <div className="flex justify-center mt-10 flex-col items-center gap-2">
+        <div>
+          <h1 className="text-white text-xl uppercase">
+            Selected Teams from Server
+          </h1>
+        </div>
+        <mai className="flex gap-4">
+          {teams.map((team, index) => (
+            <div
+              key={index}
+              className="border-[2px] border-blue-800 p-4 rounded-lg"
+            >
+              <h2 className="text-lg">
+                <span className="font-bold text-blue-500">Team 1: </span>
+                {team.team1.join(", ")}
+              </h2>
+
+              <h2 className="text-lg">
+                <span className="font-bold text-blue-500">Team 2: </span>{" "}
+                {team.team2.join(", ")}
+              </h2>
+            </div>
+          ))}
+        </mai>
       </div>
     </>
   );
