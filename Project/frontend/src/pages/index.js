@@ -55,6 +55,13 @@ export default function index() {
         <p className="text-lg font-bold text-center my-6">
           Please fill the inputs below.
         </p>
+        <div>
+          <p> ML = moneyline odd</p>
+          <p> Away = Away team moneyline american odds</p>
+          <p> Home = Home team moneyline american odds</p>
+          <p>                                             </p>
+        </div>
+        
       </div>
       <div className="flex">
         <form className="flex gap-2 flex-col" onSubmit={handleSubmit}>
@@ -78,8 +85,8 @@ export default function index() {
 
       {predictionShow && (
         <div className="flex flex-col justify-center items-center">
-          Your Prediction is:{" "}
-          <span className="text-2xl font-bold text-blue-400">{prediction}</span>
+          Confidence that the home team will win:{" "} 
+          <span className="text-2xl font-bold text-blue-400">{prediction} %</span>
         </div>
       )}
     </>

@@ -36,7 +36,7 @@ def members():
     input_tensor = torch.tensor(data['input'])
     input_normalized = (input_tensor - 24.36) / 4.12
     with torch.no_grad():
-        output = f.sigmoid(model(input_normalized))
+        output = f.sigmoid(model(input_normalized)) * 100
     return jsonify({'prediction': output.item()})
 
 
